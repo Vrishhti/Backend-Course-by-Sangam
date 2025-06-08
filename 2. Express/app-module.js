@@ -9,12 +9,18 @@ app.get('/', (req, res)=>{
 
 app.post('/api/data' , (req,res)=>{
     res.json({
-        messgae:'data recieved',
-        data:req.vody
+        message:'data recieved',
+        data:req.body
     })
 })
 
-app.use(err,req,res,next)=>{
+app.use((err,req,res,next)=>{
     console.log(err.stack);
     res.status(500).send('internal server error')
-}
+})
+
+
+const port= 3000;
+app.listen(port,()=>{
+    console.log("sever running on port" , port)
+})
