@@ -1,0 +1,24 @@
+<%- include ('components/header.ejs') %>
+<h1> welcome to home </h1>
+<label> List of prods</label>
+<ul>
+
+   
+  <% — This opens an EJS scriptlet tag. It tells EJS: “Hey, I’m about to write some JavaScript code.”
+  products.forEach(product => { — This is the start of a JavaScript function block (a loop).
+  %> — This closes the EJS tag so that you can go back to writing normal HTML (like <li> tags).
+  Because EJS needs to know where the JavaScript ends and where the HTML begins. Without closing it, 
+  EJS would think everything after that is still JavaScript, which would cause an error.
+
+
+
+    <% products.forEach(product=>{ %>
+    <li><%= product.title %></li>  
+
+   
+    This is where you close the JavaScript block (the forEach function).
+    Again, you use <% to open the EJS tag, write the closing }), and then %> to close the EJS tag.
+  
+  
+    <%}) %>
+</ul>
