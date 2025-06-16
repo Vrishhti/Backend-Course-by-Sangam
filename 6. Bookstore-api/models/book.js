@@ -16,7 +16,7 @@ const BookSchema = new  mongoose.Schema({
         type: Number,
         required:[true, 'Year is required'],
         min: [2000, 'year must be atleast 2000'],
-        max: [new Date().getFullYear, "Year can't be in the future"] 
+        max: [new Date().getFullYear(), "Year can't be in the future"] 
     },
     createdAt:{
         type: Date,
@@ -24,4 +24,7 @@ const BookSchema = new  mongoose.Schema({
     }
 })
 
-module.exports= mongoose.model('BookSchema')
+//'Book' – Model name
+// This is the name of the model you want to create.
+
+module.exports= mongoose.model('Book', BookSchema)
