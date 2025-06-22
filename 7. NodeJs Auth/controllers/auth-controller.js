@@ -46,7 +46,7 @@ const registerUser = async (req, res)=>{
     }
     catch(e){
         console.log(e);
-        res.status.json({
+        res.status(400).json({
             sucess:false,
             message: 'error occured', e
         })
@@ -72,10 +72,10 @@ const loginUser = async (req, res)=>{
             })
            }
 
-           //ofpw is correct
+           //if pw is correct
            const isPwMatch = await bcrypt.compare(password, user.password)
            if(!isPwMatch){
-            return res.status.json({
+            return res.status(400).json({
                 success:false,
                 message:"Password is incorrect"
             })
