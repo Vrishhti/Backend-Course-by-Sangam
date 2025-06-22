@@ -5,7 +5,7 @@ const uploadImage= async(req,res)=>{
         //checkif file is missing in req obj
         if(!req.file){
             return res.status(400).json({
-                sucess:false,
+                success:false,
                 message:'File is required, Please uplaod an image'
             })
         }
@@ -36,4 +36,4 @@ const uploadImage= async(req,res)=>{
     }
 }
 
-module.exports={uploadImage}
+module.exports=uploadImage
