@@ -106,4 +106,50 @@ const loginUser = async (req, res)=>{
     }
 }
 
-module.exports = {loginUser, registerUser}
+// for an user to be able to chnage pw he should be authenticated, as in you need to be logged in to change the pw
+//first you'll enter old pw and then the new pw
+const changePassword = async(req,res)=>{
+    try{
+      const userId= req.userInfo.userId  
+
+      //extract old and new pw
+      const {oldPw, newPw}= req.body;
+
+      //find the current logged in user
+      const user = await User.findById(userId)
+      if(!user){
+        return res.status(400).json({
+            success:false,
+            message: 'user not found'
+        })
+      }
+
+      //check if the oldpw entered by the user actually matches to the old pw
+      const isPwMatch = await bcrypt.compare(oldPw, user.password);
+
+      if(!isPwMatch){
+        return res.status(400).json({
+            success:false,
+            message: 'pw is incorrect'
+        })
+      }
+
+      //has new created pw
+      const salt = await bcrypt.genSalt(10);
+      const newHashPw = await bcrypt.hash(newPw, salt);
+
+      //update user pw with newPw
+      user.password= newHashPw
+      await user.save();
+      return res.status(200).json({
+            success:true,
+            message: 'pw changed successfully'
+
+      })
+    }
+    catch{
+
+    }
+}
+
+module.exports = {loginUser, registerUser, changePassword}
