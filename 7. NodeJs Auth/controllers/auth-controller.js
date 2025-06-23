@@ -147,8 +147,12 @@ const changePassword = async(req,res)=>{
 
       })
     }
-    catch{
-
+    catch(e){
+        console.log(e);
+        res.status.json({
+            sucess:false,
+            message: 'error occured', e
+        })
     }
 }
 
