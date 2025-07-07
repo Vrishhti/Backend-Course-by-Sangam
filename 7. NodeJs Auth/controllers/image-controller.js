@@ -39,10 +39,35 @@ const uploadImage= async(req,res)=>{
 
 const fetchImages= async(req,res)=>{
     try{
-
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 5;
+        const skip= (page-1)*limit;
+        const sortBy= req.query.sortBy || 'createdAt';
+        const sortOrder = req.query.sortOrder === 'asc' ? 1 : -1
+        const totalImages = await Image.countDocuments();
+        const totalPages= Math.ceil(totalImages/limit)
+        //This creates a dynamic sort object for MongoDB.
+        // For example, if sortBy = 'name' and sortOrder = 1, then sortObj becomes { name: 1 }.
+        // This object can be passed to a MongoDB query like .sort(sortObj) to apply the sorting.
+        const sortObj={};
+        sortObj[sortBy] = sortOrder
+        const images = await Image.find().sort(sortObj).skip(skip).limit(limit);
+        if(images){
+            res.status(200).json({
+                success:true,
+                currentPage: page,
+                totalPages: totalPages,
+                totalImages: totalImages,
+                data:images,
+            })
+        }
     }
-    catch{
-        
+    catch(e){
+        console.log(e);
+        res.status.json({
+            sucess:false,
+            message: 'error occured', e
+        })
     }
 }
 
