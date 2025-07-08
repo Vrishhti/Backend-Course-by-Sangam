@@ -116,7 +116,39 @@ const getProductAnalysis = async(req,res)=>{
                 $match:{
                     category: 'Electronics'
                 }
+            },
+            {
+                $group:{
+                    _id: null,
+                    totalRevenue:{
+                        $sum: "$price"
+                    },
+                    averagePrice:{
+                        $avg:"$price"
+                    },
+                    maxProductPrice:{
+                        $max:"$price"
+                    },
+                    minProductPrice:{
+                        $min:"$price"
+                    },
+                }
+            },
+            {
+
+                //0 is passed when you want to exclude the given field. 1 is passed when u want to inlcude it
+                $project:{
+                    _id:0,
+                    totalRevenue:1,
+                    averagePrice:1,
+                    maxProductPrice:1,
+                    minProductPrice:1,
+                    priceRange:{
+                        $substract:["$maxProductPrice", "$minProductPrice"]
+                    }
+                }
             }
+            
         ])
         res.status(200).json({
             success:true,
